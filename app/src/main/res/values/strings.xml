@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- drawer list-->
+    <string name="hot_nav">hot</string>
+    <string name="trending_nav">trending</string>
+    <string name="fresh_nav">fresh</string>
 </resources>
