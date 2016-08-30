@@ -10,4 +10,7 @@
     <string name="hot_nav">hot</string>
     <string name="trending_nav">trending</string>
     <string name="fresh_nav">fresh</string>
+
+    <!--action_refresh-->
+    <string name="action_refresh">Refresh</string>
 </resources>
