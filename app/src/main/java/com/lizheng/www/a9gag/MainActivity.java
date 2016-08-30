@@ -13,15 +13,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.lizheng.www.a9gag.model.Category;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    private Category mCategory;
+
+    private FeedsFragment mContentFragment;
+    //用于下面的修改title
+    private  Toolbar toolbar;
+
+    private DrawerLayout drawer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_launcher);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -32,14 +46,29 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //初始化默认显示 hot 的内容
+        setCategory(Category.hot);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void setCategory(Category category) {
+        if (mCategory == category) {
+            return;
+        }
+        mCategory = category;
+        // setTitle
+        toolbar.setTitle(mCategory.getmDisplayName());
+        mContentFragment = FeedsFragment.newInstance(category);
+
+
     }
 
     @Override
@@ -72,6 +101,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 //TODO:
                 return  true;
+            case R.id.action_refresh:
+                //TODO:
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -84,10 +116,19 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.hot_nav) {
-            // Handle the camera action
+            item.setChecked(true);
+            drawer.closeDrawers();
+            setCategory(Category.hot);
+
         } else if (id == R.id.trending_nav) {
+            item.setChecked(true);
+            drawer.closeDrawers();
+            setCategory(Category.trending);
 
         } else if (id == R.id.fresh_nav) {
+            item.setChecked(true);
+            drawer.closeDrawers();
+            setCategory(Category.fresh);
 
         } else if (id == R.id.nav_share) {
 
