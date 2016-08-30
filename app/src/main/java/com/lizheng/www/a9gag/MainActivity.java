@@ -3,6 +3,7 @@ package com.lizheng.www.a9gag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.ic_launcher);
+        toolbar.setLogo(R.drawable.ic_actionbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +60,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    protected void replaceFragment(int viewId, FeedsFragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(viewId, fragment).commit();
+    }
+
+
     public void setCategory(Category category) {
         if (mCategory == category) {
             return;
@@ -67,8 +74,7 @@ public class MainActivity extends AppCompatActivity
         // setTitle
         toolbar.setTitle(mCategory.getmDisplayName());
         mContentFragment = FeedsFragment.newInstance(category);
-
-
+        replaceFragment(R.id.content_frame, mContentFragment);
     }
 
     @Override
