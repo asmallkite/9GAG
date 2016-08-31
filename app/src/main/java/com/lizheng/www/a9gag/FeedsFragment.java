@@ -19,8 +19,7 @@ public class FeedsFragment extends Fragment {
 
     public static final String EXTRA_CATEGORY = "extra_category";
 
-    //  types of parameters
-    private String choosed_category;
+    private Category mCategory;
 
 
     public FeedsFragment() {
@@ -49,7 +48,7 @@ public class FeedsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         if (getArguments() != null) {
-            choosed_category = getArguments().getString(EXTRA_CATEGORY);
+            mCategory = Category.valueOf(getArguments().getString(EXTRA_CATEGORY));
         }
     }
 
