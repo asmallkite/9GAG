@@ -2,12 +2,20 @@ package com.lizheng.www.a9gag;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lizheng.www.a9gag.dao.FeedsDataHelper;
 import com.lizheng.www.a9gag.model.Category;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -18,8 +26,11 @@ import com.lizheng.www.a9gag.model.Category;
 public class FeedsFragment extends Fragment {
 
     public static final String EXTRA_CATEGORY = "extra_category";
+    @BindView(R.id.grid_view)
+    RecyclerView gridView;
 
     private Category mCategory;
+    private FeedsDataHelper mDataHelper;
 
 
     public FeedsFragment() {
@@ -27,9 +38,9 @@ public class FeedsFragment extends Fragment {
     }
 
     /**
-     *
      * * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @param category
      * @return A new instance of fragment FeedsFragment.
      */
@@ -58,7 +69,20 @@ public class FeedsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View contentView = inflater.inflate(R.layout.fragment_feeds, container, false);
+
+        mDataHelper = new FeedsDataHelper(APP.getsContext(), mCategory);
+
+        ButterKnife.bind(this, contentView);
         return contentView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        gridView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @OnClick(R.id.grid_view)
+    public void onClick() {
+    }
 }
