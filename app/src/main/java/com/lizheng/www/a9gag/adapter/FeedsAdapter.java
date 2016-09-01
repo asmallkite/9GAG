@@ -1,7 +1,11 @@
 package com.lizheng.www.a9gag.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +15,9 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.lizheng.www.a9gag.R;
+import com.lizheng.www.a9gag.data.ImageCacheManager;
 import com.lizheng.www.a9gag.model.Feed;
+import com.lizheng.www.a9gag.util.DensityUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,12 +27,21 @@ import butterknife.OnClick;
  * Created by 10648 on 2016/8/31 0031.
  */
 public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.ViewHolder> {
+    private static final int[] COLORS = {R.color.holo_blue_light, R.color.holo_green_light, R.color.holo_orange_light, R.color.holo_purple_light, R.color.holo_red_light};
+
+    private static final int IMAGE_MAX_HEIGHT = 240;
+
     private final LayoutInflater mLayoutInflater;
+
+    Drawable mDefaultImageDrawable;
+
+    private Context sContext;
 
 
     public FeedsAdapter(Context context) {
         super(context, null);
         mLayoutInflater = LayoutInflater.from(context);
+        sContext = context;
     }
 
     @Override
@@ -38,9 +53,12 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
         }
 
         Feed feed = Feed.fromCursor(cursor);
+        mDefaultImageDrawable = new ColorDrawable(ContextCompat.getColor(sContext, COLORS[cursor.getPosition() % COLORS.length]));
+        feedViewHolder.imageRequest = ImageCacheManager.loadImage(feed.images.normal, ImageCacheManager
+        .getImageListener(feedViewHolder.ivNormal, mDefaultImageDrawable, mDefaultImageDrawable), 0, DensityUtils.dip2px(sContext, IMAGE_MAX_HEIGHT));
 
-//        feedViewHolder.tvCaption.setText(feed.caption);
-//        feedViewHolder.imageRequest
+
+        feedViewHolder.tvCaption.setText(feed.caption);
 
     }
 
