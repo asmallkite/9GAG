@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.google.gson.Gson;
 import com.lizheng.www.a9gag.dao.FeedsDataHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -51,6 +52,19 @@ public class Feed extends BaseModel {
 
     private static Feed getFromCache(String id) {
         return CACHE.get(id);
+    }
+
+    public static class FeedRequestData {
+        public ArrayList<Feed> data;
+        public Paging paging;
+
+        public String getPage() {
+            return paging.next;
+        }
+    }
+
+    private class Paging {
+        public String next;
     }
 
 }

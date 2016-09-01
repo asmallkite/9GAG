@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.lizheng.www.a9gag.FeedsFragment;
+import com.lizheng.www.a9gag.R;
 import com.lizheng.www.a9gag.model.Category;
 
 public class MainActivity extends AppCompatActivity
