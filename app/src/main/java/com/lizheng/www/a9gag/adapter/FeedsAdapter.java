@@ -73,9 +73,9 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 
     public static class FeedViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_caption)
+//        @BindView(R.id.tv_caption)
         TextView tvCaption;
-        @BindView(R.id.iv_normal)
+//        @BindView(R.id.iv_normal)
         ImageView ivNormal;
 
         FeedsAdapter mAdapter;
@@ -86,17 +86,11 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
         public FeedViewHolder(View itemView, FeedsAdapter mAdapter) {
             super(itemView);
             this.mAdapter = mAdapter;
+            tvCaption = (TextView) itemView.findViewById(R.id.tv_caption);
+            ivNormal = (ImageView) itemView.findViewById(R.id.iv_normal);
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick({R.id.tv_caption, R.id.iv_normal})
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.tv_caption:
-                    break;
-                case R.id.iv_normal:
-                    break;
-            }
-        }
+
     }
 }

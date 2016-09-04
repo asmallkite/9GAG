@@ -9,7 +9,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.lizheng.www.a9gag.APP;
@@ -22,7 +21,7 @@ public class DataProvider extends ContentProvider {
 
     static final Object DBLock = new Object();
 
-    public static final String AUTHORITY = "com.storm.9gag.provider";
+    public static final String AUTHORITY = "com.lizheng.www.a9gag.provider";
 
     public static final String SCHEME = "content://";
 

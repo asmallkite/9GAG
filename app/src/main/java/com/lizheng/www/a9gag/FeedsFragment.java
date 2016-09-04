@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,29 +39,26 @@ import butterknife.OnClick;
  * Use the {@link FeedsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FeedsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXTRA_CATEGORY = "extra_category";
-    @BindView(R.id.grid_view)
+
     RecyclerView gridView;
+    SwipeRefreshLayout mSwipeLayout;
 
     private Category mCategory;
     private FeedsDataHelper mDataHelper;
-    private FeedsAdapter mAdapter;
+    FeedsAdapter mAdapter;
 
     private String mPage = "0";
 
 
 
-    public FeedsFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param category
+     * @param category 三个类别
      * @return A new instance of fragment FeedsFragment.
      */
     public static FeedsFragment newInstance(Category category) {
@@ -88,44 +86,53 @@ public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderC
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View contentView = inflater.inflate(R.layout.fragment_feeds, container, false);
+        gridView = (RecyclerView) contentView.findViewById(R.id.grid_view);
+        mSwipeLayout = (SwipeRefreshLayout) contentView.findViewById(R.id.swipe_container);
 
         mDataHelper = new FeedsDataHelper(APP.getsContext(), mCategory);
 
-        ButterKnife.bind(this, contentView);
+        gridView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new FeedsAdapter(getActivity());
+        gridView.setAdapter(mAdapter);
+
+        mSwipeLayout.setOnRefreshListener(this);
+        mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        loadFirst();
         return contentView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        gridView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new FeedsAdapter(getActivity());
-        gridView.setAdapter(mAdapter);
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
     }
 
     @OnClick(R.id.grid_view)
     public void onClick() {
     }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mDataHelper.getCursorLoader();
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.changeCursor(data);
-        if (data != null && data.getCount() == 0) {
-            loadFirst();
-        }
-
-    }
+//
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return mDataHelper.getCursorLoader();
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        mAdapter.changeCursor(data);
+//        if (data != null && data.getCount() == 0) {
+//            loadFirst();
+//        }
+//
+//    }
 
     private void loadFirst() {
         mPage = "0";
@@ -133,8 +140,10 @@ public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     private void loadData(String next) {
-        //TODO:关于刷新的 相关代码
 
+        if (!mSwipeLayout.isRefreshing() && ("0".equals(next))) {
+            mSwipeLayout.setRefreshing(true);
+        }
         executeRequest(new GsonRequest(String.format(GagApi.LIST, mCategory.name(), next),
                 Feed.FeedRequestData.class, responseListener(), errorListener()));
     }
@@ -183,7 +192,14 @@ public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.changeCursor(null);
+    public void onRefresh() {
+        loadFirst();
     }
+
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        mAdapter.changeCursor(null);
+//    }
+
+
 }
