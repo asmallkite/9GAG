@@ -2,7 +2,6 @@ package com.lizheng.www.a9gag.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,15 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.lizheng.www.a9gag.APP;
-import com.lizheng.www.a9gag.FeedsFragment;
 import com.lizheng.www.a9gag.R;
 import com.lizheng.www.a9gag.data.ImageCacheManager;
 import com.lizheng.www.a9gag.model.Feed;
 import com.lizheng.www.a9gag.util.DensityUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by 10648 on 2016/8/31 0031.
@@ -40,6 +40,8 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
     protected Context sContext;
 
     FeedViewHolder feedViewHolder;
+    @BindView(R.id._rv_list_item)
+    LinearLayout RvListItem;
 
 
     public FeedsAdapter(Context context) {
@@ -59,7 +61,7 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
         Feed feed = Feed.fromCursor(cursor);
         mDefaultImageDrawable = new ColorDrawable(ContextCompat.getColor(sContext, COLORS[cursor.getPosition() % COLORS.length]));
         feedViewHolder.imageRequest = ImageCacheManager.loadImage(feed.images.normal, ImageCacheManager
-        .getImageListener(feedViewHolder.ivNormal, mDefaultImageDrawable, mDefaultImageDrawable), 0, DensityUtils.dip2px(sContext, IMAGE_MAX_HEIGHT));
+                .getImageListener(feedViewHolder.ivNormal, mDefaultImageDrawable, mDefaultImageDrawable), 0, DensityUtils.dip2px(sContext, IMAGE_MAX_HEIGHT));
 
 
         feedViewHolder.tvCaption.setText(feed.caption);
@@ -76,11 +78,12 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 
 
 
+
     public static class FeedViewHolder extends RecyclerView.ViewHolder {
 
-         TextView tvCaption;
+        TextView tvCaption;
 
-         ImageView ivNormal;
+        ImageView ivNormal;
 
         FeedsAdapter mAdapter;
 
@@ -89,13 +92,17 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 
         public FeedViewHolder(View itemView, FeedsAdapter mAdapter) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
             this.mAdapter = mAdapter;
             tvCaption = (TextView) itemView.findViewById(R.id.tv_caption);
             ivNormal = (ImageView) itemView.findViewById(R.id.iv_normal);
         }
-
-
-
+        @OnClick(R.id._rv_list_item)
+        public void onClick() {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://www.baidu.com"));
+            mAdapter.mContext.startActivity(intent);
+        }
 
 
     }
