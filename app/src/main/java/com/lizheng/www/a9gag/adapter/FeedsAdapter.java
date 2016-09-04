@@ -19,10 +19,6 @@ import com.lizheng.www.a9gag.data.ImageCacheManager;
 import com.lizheng.www.a9gag.model.Feed;
 import com.lizheng.www.a9gag.util.DensityUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by 10648 on 2016/8/31 0031.
  */

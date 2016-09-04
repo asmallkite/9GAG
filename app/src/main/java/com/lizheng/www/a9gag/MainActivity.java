@@ -37,8 +37,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setLogo(R.drawable.ic_launcher);
         setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.ic_actionbar);
+        toolbar.setNavigationIcon(R.drawable.icon);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -30,9 +30,6 @@ import com.lizheng.www.a9gag.util.ToastUtils;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
@@ -115,10 +112,6 @@ public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderC
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(0, null, this);
-    }
-
-    @OnClick(R.id.grid_view)
-    public void onClick() {
     }
 
     @Override
