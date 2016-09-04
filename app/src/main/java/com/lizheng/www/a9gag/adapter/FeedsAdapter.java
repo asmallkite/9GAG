@@ -19,6 +19,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.lizheng.www.a9gag.R;
 import com.lizheng.www.a9gag.data.ImageCacheManager;
 import com.lizheng.www.a9gag.model.Feed;
+import com.lizheng.www.a9gag.ui.fragment.ImageViewActivity;
 import com.lizheng.www.a9gag.util.DensityUtils;
 
 import butterknife.BindView;
@@ -32,6 +33,8 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
     private static final int[] COLORS = {R.color.holo_blue_light, R.color.holo_green_light, R.color.holo_orange_light, R.color.holo_purple_light, R.color.holo_red_light};
 
     private static final int IMAGE_MAX_HEIGHT = 240;
+
+    public static String Image_Url = null;
 
     private final LayoutInflater mLayoutInflater;
 
@@ -59,6 +62,7 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 //        }
 
         Feed feed = Feed.fromCursor(cursor);
+        Image_Url = feed.images.large;
         mDefaultImageDrawable = new ColorDrawable(ContextCompat.getColor(sContext, COLORS[cursor.getPosition() % COLORS.length]));
         feedViewHolder.imageRequest = ImageCacheManager.loadImage(feed.images.normal, ImageCacheManager
                 .getImageListener(feedViewHolder.ivNormal, mDefaultImageDrawable, mDefaultImageDrawable), 0, DensityUtils.dip2px(sContext, IMAGE_MAX_HEIGHT));
@@ -99,11 +103,14 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
         }
         @OnClick(R.id._rv_list_item)
         public void onClick() {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://www.baidu.com"));
-            mAdapter.mContext.startActivity(intent);
+            Intent intent = new Intent(mAdapter.sContext, ImageViewActivity.class);
+            intent.putExtra("Image_Url", Image_Url);
+            mAdapter.sContext.startActivity(intent);
+
         }
 
 
     }
+
+
 }
