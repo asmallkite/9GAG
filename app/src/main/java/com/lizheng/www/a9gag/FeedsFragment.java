@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -39,7 +40,7 @@ import butterknife.OnClick;
  * Use the {@link FeedsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeedsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXTRA_CATEGORY = "extra_category";
 
@@ -113,26 +114,26 @@ public class FeedsFragment extends BaseFragment implements SwipeRefreshLayout.On
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @OnClick(R.id.grid_view)
     public void onClick() {
     }
-//
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return mDataHelper.getCursorLoader();
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        mAdapter.changeCursor(data);
-//        if (data != null && data.getCount() == 0) {
-//            loadFirst();
-//        }
-//
-//    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return mDataHelper.getCursorLoader();
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.changeCursor(data);
+        if (data != null && data.getCount() == 0) {
+            loadFirst();
+        }
+
+    }
 
     private void loadFirst() {
         mPage = "0";
@@ -166,15 +167,16 @@ public class FeedsFragment extends BaseFragment implements SwipeRefreshLayout.On
                         return null;
                     }
 
-//                    @Override
-//                    protected void onPostExecute(Object o) {
-//                        super.onPostExecute(o);
-//                        if (isRefreshFromTop) {
-//                            setRefreshing(false);
-//                        } else {
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        super.onPostExecute(o);
+                        if (isRefreshFromTop) {
+                            mSwipeLayout.setRefreshing(false);
+                        } else {
+                            Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
 //                            gridView.setState(LoadingFooter.State.Idle);
-//                        }
-//                    }
+                        }
+                    }
                 });
             }
         };
@@ -185,6 +187,7 @@ public class FeedsFragment extends BaseFragment implements SwipeRefreshLayout.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 ToastUtils.showShort("R.string.loading_failed");
+                mSwipeLayout.setRefreshing(false);
 //                setRefreshing(false);
 //                gridView.setState(LoadingFooter.State.Idle, 3000);
             }
@@ -196,10 +199,10 @@ public class FeedsFragment extends BaseFragment implements SwipeRefreshLayout.On
         loadFirst();
     }
 
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        mAdapter.changeCursor(null);
-//    }
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.changeCursor(null);
+    }
 
 
 }

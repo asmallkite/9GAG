@@ -37,6 +37,8 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 
     private Context sContext;
 
+    FeedViewHolder feedViewHolder;
+
 
     public FeedsAdapter(Context context) {
         super(context, null);
@@ -47,10 +49,10 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
 
-        FeedViewHolder feedViewHolder = (FeedViewHolder) holder;
-        if (feedViewHolder != null) {
-            feedViewHolder.imageRequest.cancelRequest();
-        }
+        feedViewHolder = (FeedViewHolder) holder;
+//        if (feedViewHolder != null) {
+//            feedViewHolder.imageRequest.cancelRequest();
+//        }
 
         Feed feed = Feed.fromCursor(cursor);
         mDefaultImageDrawable = new ColorDrawable(ContextCompat.getColor(sContext, COLORS[cursor.getPosition() % COLORS.length]));
@@ -65,7 +67,8 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.listitem_feed, parent, false);
-        return new FeedViewHolder(view, this);
+        feedViewHolder = new FeedViewHolder(view, this);
+        return feedViewHolder;
 
     }
 
@@ -73,14 +76,13 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 
     public static class FeedViewHolder extends RecyclerView.ViewHolder {
 
-//        @BindView(R.id.tv_caption)
-        TextView tvCaption;
-//        @BindView(R.id.iv_normal)
-        ImageView ivNormal;
+         TextView tvCaption;
+
+         ImageView ivNormal;
 
         FeedsAdapter mAdapter;
 
-        public ImageLoader.ImageContainer imageRequest;
+        public ImageLoader.ImageContainer imageRequest = null;
 
 
         public FeedViewHolder(View itemView, FeedsAdapter mAdapter) {
@@ -88,7 +90,6 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
             this.mAdapter = mAdapter;
             tvCaption = (TextView) itemView.findViewById(R.id.tv_caption);
             ivNormal = (ImageView) itemView.findViewById(R.id.iv_normal);
-            ButterKnife.bind(this, itemView);
         }
 
 
