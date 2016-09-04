@@ -1,19 +1,25 @@
 package com.lizheng.www.a9gag.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.lizheng.www.a9gag.APP;
+import com.lizheng.www.a9gag.FeedsFragment;
 import com.lizheng.www.a9gag.R;
 import com.lizheng.www.a9gag.data.ImageCacheManager;
 import com.lizheng.www.a9gag.model.Feed;
@@ -31,7 +37,7 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
 
     Drawable mDefaultImageDrawable;
 
-    private Context sContext;
+    protected Context sContext;
 
     FeedViewHolder feedViewHolder;
 
@@ -87,6 +93,9 @@ public class FeedsAdapter extends BaseAbstractRecycleCursorAdapter<RecyclerView.
             tvCaption = (TextView) itemView.findViewById(R.id.tv_caption);
             ivNormal = (ImageView) itemView.findViewById(R.id.iv_normal);
         }
+
+
+
 
 
     }

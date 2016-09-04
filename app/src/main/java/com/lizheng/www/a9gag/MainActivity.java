@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity
                 onBackPressed();
                 return true;
             case R.id.action_settings:
-                
+
                 return  true;
             case R.id.action_refresh:
                 mContentFragment.loadFirst();
