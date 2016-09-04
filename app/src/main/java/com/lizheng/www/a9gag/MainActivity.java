@@ -109,10 +109,11 @@ public class MainActivity extends AppCompatActivity
                 onBackPressed();
                 return true;
             case R.id.action_settings:
-                //TODO:
+                
                 return  true;
             case R.id.action_refresh:
-                //TODO:
+                mContentFragment.loadFirst();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

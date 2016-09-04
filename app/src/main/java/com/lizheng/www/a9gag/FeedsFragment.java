@@ -128,7 +128,7 @@ public class FeedsFragment extends BaseFragment implements LoaderManager.LoaderC
 
     }
 
-    private void loadFirst() {
+    protected void loadFirst() {
         mPage = "0";
         loadData(mPage);
     }
